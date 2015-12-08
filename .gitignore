@@ -1,0 +1,26 @@
+#cmake stuff
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+
+#anything we make
+bin/
+build/
+lib/
+*.so
+*.exe
+*.dll
+*.o
+*.class
+*.jar
+
+#GNOME backup files
+~*.*
+
+#logs
+*.log
+
+#OS generated stuff
+ehthumbs.db
+Thumbs.db

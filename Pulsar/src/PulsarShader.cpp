@@ -1,0 +1,311 @@
+#include <PulsarShader.hpp>
+#include <PulsarTexture.hpp>
+using namespace Pulsar;
+
+Shader::Shader()
+{
+	program = glCreateProgram();
+	if(program == 0)
+		cout << "Failed to create shader" << endl;
+}
+
+Shader::~Shader()
+{
+	glDeleteProgram(program);
+
+	int size = shaderList.size();
+	for(int i=0;i<size;i++)
+		glDeleteShader(shaderList[i]);
+	shaderList.clear();
+}
+
+bool Shader::addVertexShader(string text)
+{
+	return addProgram(text, GL_VERTEX_SHADER);
+}
+
+bool Shader::addFragmentShader(string text)
+{
+	return addProgram(text, GL_FRAGMENT_SHADER);
+}
+
+bool Shader::compile()
+{
+	glLinkProgram(program);
+
+	int reasult;
+	glGetProgramiv(program,GL_LINK_STATUS,&reasult);
+	if(reasult != GL_TRUE)
+	{
+		char* data = new char[2001];
+		int length;
+		glGetProgramInfoLog(program,2000,&length,data);
+		cout << "failed to link program" << endl << data << endl;
+		delete [] data;
+		return false;
+	}
+
+	glValidateProgram(program);
+	glGetProgramiv(program,GL_VALIDATE_STATUS,&reasult);
+	if(reasult == 0)
+	{
+		char* data = new char[2001];
+		int length;
+		glGetProgramInfoLog(program,2000,&length,data);
+		cout << "failed to validate program" << endl << data << endl;
+		delete [] data;
+		return false;
+	}
+	//cache uniforms in a hash table for fast access
+	addAllUniform();
+	return true;
+}
+
+void Shader::bind()
+{
+	glUseProgram(program);
+}
+
+void Shader::unbind()
+{
+	glUseProgram(0);
+}
+
+bool Shader::addProgram(string text, GLenum type)
+{
+
+	//Create vertex shader
+	GLuint shader = glCreateShader(type);
+	const char* str = text.c_str();
+
+	if(shader == 0)
+	{
+		cout << "Failed to create shader" << endl;
+		return false;
+	}
+
+	//Set vertex source
+	glShaderSource(shader, 1, &str, NULL);
+
+	//Compile vertex source
+	glCompileShader(shader);
+
+	//Check vertex shader for errors
+	GLint reasult = GL_FALSE;
+	glGetShaderiv( shader, GL_COMPILE_STATUS, &reasult );
+	if(reasult != GL_TRUE)
+	{
+		char* data = new char[2001];
+		int length;
+		glGetShaderInfoLog(shader,2000,&length,data);
+		string shaderType = "Unknown";
+		switch (type)
+		{
+			case GL_VERTEX_SHADER:
+				shaderType = "vertex";
+				break;
+			case GL_FRAGMENT_SHADER:
+				shaderType = "fragment";
+				break;
+			default:
+				shaderType = "Unknown";
+		}
+		cout << "failed to compile " << shaderType << " shader" << endl << data << endl;
+		delete [] data;
+		return false;
+	}
+	//Attach vertex shader to program
+	glAttachShader(program, shader);
+	shaderList.push_back(shader);
+	return true;
+}
+
+bool Shader::setParameter(string name,float val)
+{
+	//GLint uniformLodation = glGetUniformLocation(program,name.c_str());
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform1f(uniformLodation,val);
+	return true;
+}
+
+bool Shader::setParameter(string name, vec2 val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform2fv(uniformLodation,1,(float*)&val);
+	return true;
+}
+
+bool Shader::setParameter(string name, vec3 val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform3fv(uniformLodation,1,(float*)&val);
+	return true;
+}
+
+bool Shader::setParameter(string name, vec4 val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform4fv(uniformLodation,1,(float*)&val);
+	return true;
+}
+
+bool Shader::setParameter(string name, mat3x3 val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniformMatrix3fv(uniformLodation,1,GL_FALSE,(float*)&val);
+	return true;
+}
+
+bool Shader::setParameter(string name, mat4x4 val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniformMatrix4fv(uniformLodation,1,GL_FALSE,(float*)&val);
+	return true;
+}
+
+bool Shader::setParameter(string name, bool val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform1i(uniformLodation,val);
+	return true;
+}
+
+bool Shader::setParameter(string name, int val)
+{
+	GLint uniformLodation = getUniform(name);
+	if(uniformLodation == -1)
+	{
+		cout << "Error : Uniform \"" << name << "\" not found" << endl;
+		return false;
+	}
+	glUniform1i(uniformLodation,val);
+	return true;
+}
+
+void Shader::addAllUniform()
+{
+	int total = -1;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &total);
+
+	int maxLength;
+	glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
+	char* name = new char[maxLength];
+	for(int i=0; i<total; i++)
+	{
+		int nameLen=-1, num=-1;
+		GLenum type = GL_ZERO;
+		glGetActiveUniform(program, GLuint(i), maxLength,
+			&nameLen, &num, &type, name);
+		name[nameLen] = 0;
+		GLuint location = glGetUniformLocation(program, name);
+		uniforms.insert({name,location});
+	}
+	delete [] name;
+}
+
+GLint Shader::getUniform(string name)
+{
+	unordered_map<string,GLint>::const_iterator search = uniforms.find(name);
+	if(search == uniforms.end())
+		return -1;
+	return search->second;
+}
+
+
+
+void MaterialShader::setTexture(Texture* tex)
+{
+	texture = tex;
+}
+
+bool MaterialShader::compile()
+{
+	bool success = true;
+	success = Shader::compile();
+	if(success == false)
+		return false;
+
+	//Check if all uniforms we need are avliable
+	string requiredUniform [] = {"transform","camera","projection"};
+	for(string& str : requiredUniform)
+	{
+		if(getUniform(str) == -1)
+		{
+			cout << "Warrning : Missing uniform \"" << str << "\" in MaterialShader. Maybe some programming error has occurred." << endl;
+			success = false;
+		}
+	}
+
+	if(success == false)
+		return false;
+
+	return true;
+}
+
+void MaterialShader::bind()
+{
+	if(texture != NULL)
+		texture->bind();
+
+	Shader::bind();
+	setParameter("transform",transformMatrix);
+	setParameter("camera",camera->getCameraMatrix());
+	setParameter("projection",projection->getProjectionMatrix());
+}
+
+void MaterialShader::unbind()
+{
+	if(texture != NULL)
+		texture->unbind();
+	Shader::unbind();
+}
+
+void MaterialShader::setTransformation(mat4 transformation)
+{
+	transformMatrix = transformation;
+}
+
+void MaterialShader::setCamera(Camera* cam)
+{
+	camera = cam;
+}
+
+void MaterialShader::setProjection(Projection* project)
+{
+	projection = project;
+}
