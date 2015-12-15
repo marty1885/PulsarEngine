@@ -35,6 +35,7 @@ public:
 	Quat(scalar x0, scalar y0, scalar z0){ w = 0; x = x0; y = y0; z = z0; }		 // Vector
 	Quat(scalar w0, scalar x0, scalar y0, scalar z0) { w = w0; x = x0; y = y0; z = z0; }	// Quaternion
 	Quat(glm::vec4 V) { w = 0; x = V.x; y = V.y; z = V.z; }
+	Quat(glm::vec3 V) { x = V.x; y = V.y; z = V.z; }
 
 	// Assignment (Conversion from scalar to Quat)
 	Quat& operator= (const scalar& w0) { return *this; }

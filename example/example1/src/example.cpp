@@ -184,15 +184,11 @@ void MainWindow::update()
 	{
 		vec2 diff = mousePos - lastMousePos;
 
-		//FIXME : This roatation does not work well. It cause the entire viewport to ratate.
-		Quatf rotateVector = ((diff.x)*Quatf(vec4(camera->getRight(),0)) + (diff.y)*Quatf(vec4(camera->getUp(),0))) * 0.005;
-		Quatf rotationAxis = Quatf(vec4(camera->getDirection(),0)) % rotateVector;
-		Quatf Rotor = rotor(rotateVector.norm(), rotationAxis);
+		//FIXME: fixed
+		Quatf rotateVector = (diff.x)*camera->getUp() + (diff.y)*camera->getRight();
+		Quatf Rotor = exp(0.003 * rotateVector);
 
-		vec3 direction =  Rotor * Quatf(vec4(camera->getDirection(),0)) * ~Rotor;
-		vec3 up = Rotor * Quatf(vec4(camera->getUp(),0)) * ~Rotor;
-
-		camera->setUp(up);
+		vec3 direction =  Rotor * camera->getDirection() * ~Rotor;
 		camera->setDirection(direction);
 
 		//HACK : This works but not well
