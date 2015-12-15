@@ -60,7 +60,7 @@ protected:
 class SceneItem
 {
 public:
-	virtual void render(Camera* camera, mat4 preTtansformMatrix = mat4()){}
+	virtual void render(Camera* camera, mat4 preTransformMatrix = mat4()){}
 	virtual ~SceneItem(){}
 
 	void setTransform(Transform transformation);
@@ -74,7 +74,7 @@ class SceneMeshItem : public SceneItem
 {
 public:
 	SceneMeshItem(Mesh* m = NULL, MaterialShader* s = NULL);
-	void render(Camera* camera, mat4 preTtansformMatrix = mat4());
+	void render(Camera* camera, mat4 preTransformMatrix = mat4());
 	void setShader(MaterialShader* materialShader);
 protected:
 	Mesh* mesh = NULL;
@@ -89,7 +89,7 @@ public:
 
 	void setModel(Model* m);
 	void setShader(MaterialShader* materialShader);
-	void render(Camera* camera, mat4 preTtansformMatrix = mat4());
+	void render(Camera* camera, mat4 preTransformMatrix = mat4());
 	void releaseMeshItem();
 protected:
 	Model* model = NULL;
@@ -100,7 +100,7 @@ protected:
 class SceneNode : public SceneItem
 {
 public:
-	void render(Camera* camera, mat4 preTtansformMatrix = mat4());
+	void render(Camera* camera, mat4 preTransformMatrix = mat4());
 	void addItem(SceneItem* item);
 	void addNode(SceneNode* node);
 

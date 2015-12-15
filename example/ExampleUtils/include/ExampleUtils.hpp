@@ -130,11 +130,11 @@ public:
 		Pause
 	};
 
-	enum Botton
+	enum Button
 	{
-		BottonLeft,
-		BottonMiddel,
-		BottonRight
+		ButtonLeft,
+		ButtonMiddle,
+		ButtonRight
 	};
 
 protected:
@@ -144,7 +144,7 @@ protected:
 
 	virtual bool getKeyState(Key key);
 	virtual glm::vec2 getMousePos();
-	virtual bool getMouseState(Botton botton);
+	virtual bool getMouseState(Button button);
 	SDL_Scancode keyToScanCode(Key key);
 	Key scanCodeToKey;
 };

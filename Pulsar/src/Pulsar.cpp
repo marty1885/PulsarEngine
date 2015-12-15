@@ -197,10 +197,10 @@ vec3 Camera::getUp()
 
 Projection Camera::getProjection()
 {
-	return projectoin;
+	return projection;
 }
 
 void Camera::setProjection(Projection proj)
 {
-	projectoin = proj;
+	projection = proj;
 }

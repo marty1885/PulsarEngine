@@ -173,18 +173,10 @@ public:
 	template <class scalar>
 	Quat<scalar> log(Quat<scalar> Q)
 	{
-		scalar n = Q.norm();
-		return Q.vect().norm()!=0 ? log(n) + acos(Q.w/n)*normalize(Q.vect()) : log(n);
-	}
-
-	// Rotor
-	template <class scalar>
-	Quat<scalar> rotor(scalar angle, Quat<scalar> axis)
-	{
-		return exp(angle*normalize(axis)/2);
+		return log(Q.norm()) + Q.vect()!=0 ? acos(Q.w/Q.norm())*normalize(Q.vect()) : 0;
 	}
 
 	typedef Quat<float>	 Quatf;
-	typedef Quat<double>	Quatd;
+	typedef Quat<double> Quatd;
 
 #endif

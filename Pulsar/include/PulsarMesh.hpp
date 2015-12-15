@@ -18,8 +18,8 @@ class Mesh
 public:
 	Mesh();
 	virtual ~Mesh();
-	void setVertives(vec3* vertices, int size);
-	void setIndecies(unsigned int* indecies, int size);
+	void setVertices(vec3* vertices, int size);
+	void setIndices(unsigned int* indecies, int size);
 	void setTextureCoord(vec2* uvCoord, int size);
 	void setNormals(vec3* normals, int size);
 	void render();

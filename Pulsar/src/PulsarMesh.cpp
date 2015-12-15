@@ -39,17 +39,17 @@ bool Model::load(string path)
 			vertices[j*3+2] = mesh->mVertices[j][2];
 
 		}
-		newMesh->setVertives((vec3*)vertices,verticesNum);
+		newMesh->setVertices((vec3*)vertices,verticesNum);
 
-		unsigned int* indecies = new unsigned int[meshFaces*3];
+		unsigned int* indices = new unsigned int[meshFaces*3];
 		for(int j=0;j<meshFaces;j++)
 		{
-			indecies[j*3+0] = mesh->mFaces[j].mIndices[0];
-			indecies[j*3+1] = mesh->mFaces[j].mIndices[1];
-			indecies[j*3+2] = mesh->mFaces[j].mIndices[2];
+			indices[j*3+0] = mesh->mFaces[j].mIndices[0];
+			indices[j*3+1] = mesh->mFaces[j].mIndices[1];
+			indices[j*3+2] = mesh->mFaces[j].mIndices[2];
 		}
 
-		newMesh->setIndecies(indecies,meshFaces*3);
+		newMesh->setIndices(indices,meshFaces*3);
 
 		float* normals = new float[mesh->mNumVertices*3];
 		if(mesh->HasNormals() == true)
@@ -80,7 +80,7 @@ bool Model::load(string path)
 		newMesh->setTextureCoord((vec2*)uvs, verticesNum);
 
 		delete [] vertices;
-		delete [] indecies;
+		delete [] indices;
 		delete [] normals;
 		delete [] uvs;
 		meshList.push_back(newMesh);
@@ -139,7 +139,7 @@ Mesh::~Mesh()
 		glDeleteBuffers(1,&nbo);
 }
 
-void Mesh::setVertives(vec3* vertices, int size)
+void Mesh::setVertices(vec3* vertices, int size)
 {
 	glBindVertexArray(vao);
 	glGenBuffers(1,&vbo);
@@ -150,14 +150,14 @@ void Mesh::setVertives(vec3* vertices, int size)
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
-void Mesh::setIndecies(unsigned int* indecies, int size)
+void Mesh::setIndices(unsigned int* indices, int size)
 {
 	dataSize = size;
 
 	glBindVertexArray(vao);
 	glGenBuffers(1,&ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,size*sizeof(int),indecies,GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,size*sizeof(int),indices,GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 

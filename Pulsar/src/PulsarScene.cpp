@@ -8,9 +8,9 @@ void SceneItem::setTransform(Transform transformation)
 	transform = transformation;
 }
 
-void SceneNode::render(Camera* camera, mat4 preTtansformMatrix)
+void SceneNode::render(Camera* camera, mat4 preTransformMatrix)
 {
-	mat4 currentMatrix = transform.getTransformation()*preTtansformMatrix;
+	mat4 currentMatrix = transform.getTransformation()*preTransformMatrix;
 	for(SceneItem*& item : childItems)
 		item->render(camera,currentMatrix);
 
@@ -34,12 +34,12 @@ SceneMeshItem::SceneMeshItem(Mesh* m, MaterialShader* s)
 	shader = s;
 }
 
-void SceneMeshItem::render(Camera* camera, mat4 preTtansformMatrix)
+void SceneMeshItem::render(Camera* camera, mat4 preTransformMatrix)
 {
 	if(shader != NULL)
 	{
 		shader->setCamera(camera);
-		shader->setTransformation(transform.getTransformation()*preTtansformMatrix);
+		shader->setTransformation(transform.getTransformation()*preTransformMatrix);
 		Projection projection = camera->getProjection();
 		shader->setProjection(&projection);
 		shader->bind();
@@ -85,11 +85,11 @@ void SceneModelItem::setShader(MaterialShader* materialShader)
 		item->setShader(materialShader);
 }
 
-void SceneModelItem::render(Camera* camera, mat4 preTtansformMatrix)
+void SceneModelItem::render(Camera* camera, mat4 preTransformMatrix)
 {
 	if(shader != NULL)
 	{
-		mat4 currentMatrix = transform.getTransformation()*preTtansformMatrix;
+		mat4 currentMatrix = transform.getTransformation()*preTransformMatrix;
 		for(SceneMeshItem*& item : meshItems)
 			item->render(camera,currentMatrix);
 	}

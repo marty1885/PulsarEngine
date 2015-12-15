@@ -28,7 +28,7 @@ protected:
 	Mesh* mesh;
 	Model* model;
 	MaterialShader* shader;
-	MaterialShader* noramlShader;
+	MaterialShader* normalShader;
 	Texture* texture;
 	Camera* camera;
 	SceneNode* rootNode;
@@ -43,17 +43,17 @@ MainWindow::MainWindow()
 	renderer.init();
 	renderer.setClearColor(vec3(0,0,0.2));
 
-	bool reasult = true;
+	bool result = true;
 	shader = new MaterialShader;
-	reasult &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	reasult &= shader->addFragmentShader(File::readAllText("data/shader/test.fs"));
-	reasult &= shader->compile();
+	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
+	result &= shader->addFragmentShader(File::readAllText("data/shader/test.fs"));
+	result &= shader->compile();
 
-	noramlShader = new MaterialShader;
-	reasult &= noramlShader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	reasult &= noramlShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
-	reasult &= noramlShader->compile();
-	if(reasult == false)
+	normalShader = new MaterialShader;
+	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
+	result &= normalShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
+	result &= normalShader->compile();
+	if(result == false)
 	{
 		terminate();
 		exit(0);
@@ -75,7 +75,7 @@ MainWindow::MainWindow()
 		0,1,0
 	};
 
-	GLuint indecies[] =
+	GLuint indices[] =
 	{
 		0,1,2,
 		2,3,0
@@ -90,8 +90,8 @@ MainWindow::MainWindow()
 	};
 
 	mesh = new Mesh;
-	mesh->setVertives((vec3*)vertices,4);
-	mesh->setIndecies(indecies,6);
+	mesh->setVertices((vec3*)vertices,4);
+	mesh->setIndices(indices,6);
 	mesh->setTextureCoord((vec2*)uv,8);
 	mesh->setNormals((vec3*)normals,4);
 
@@ -112,7 +112,7 @@ MainWindow::MainWindow()
 	meshItem->setShader(shader);
 	rootNode->addItem(meshItem);
 
-	modelItem = new SceneModelItem(model,noramlShader);
+	modelItem = new SceneModelItem(model,normalShader);
 	rootNode->addItem(modelItem);
 
 	Projection projection;
@@ -125,7 +125,7 @@ MainWindow::MainWindow()
 MainWindow::~MainWindow()
 {
 	delete shader;
-	delete noramlShader;
+	delete normalShader;
 	delete mesh;
 	delete model;
 	delete camera;
@@ -180,15 +180,15 @@ void MainWindow::update()
 
 	//Mouse movements
 	vec2 mousePos = getMousePos();
-	if(getMouseState(Botton::BottonLeft) == true)
+	if(getMouseState(Button::ButtonLeft) == true)
 	{
 		vec2 diff = mousePos - lastMousePos;
 
 		//FIXME: fixed
-		Quatf rotateVector = (diff.x)*camera->getUp() + (diff.y)*camera->getRight();
-		Quatf Rotor = exp(0.003 * rotateVector);
+		Quatf rotateVector = diff.x * camera->getUp() + diff.y * camera->getRight();
+		Quatf rotor = exp(0.003 * rotateVector);
 
-		vec3 direction =  Rotor * camera->getDirection() * ~Rotor;
+		vec3 direction =  rotor * camera->getDirection() * ~rotor;
 		camera->setDirection(direction);
 
 		//HACK : This works but not well

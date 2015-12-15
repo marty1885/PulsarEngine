@@ -230,15 +230,15 @@ vec2 Window::getMousePos()
 	return vec2(x,y);
 }
 
-bool Window::getMouseState(Botton botton)
+bool Window::getMouseState(Button button)
 {
-	const static Uint8 bottonTable[] =
+	const static Uint8 buttonTable[] =
 	{
 		SDL_BUTTON_LEFT,
 		SDL_BUTTON_MIDDLE,
 		SDL_BUTTON_RIGHT
 	};
-	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(bottonTable[botton]))
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(buttonTable[button]))
 		return true;
 	return false;
 }

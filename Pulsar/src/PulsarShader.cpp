@@ -33,9 +33,9 @@ bool Shader::compile()
 {
 	glLinkProgram(program);
 
-	int reasult;
-	glGetProgramiv(program,GL_LINK_STATUS,&reasult);
-	if(reasult != GL_TRUE)
+	int result;
+	glGetProgramiv(program,GL_LINK_STATUS,&result);
+	if(result != GL_TRUE)
 	{
 		char* data = new char[2001];
 		int length;
@@ -46,8 +46,8 @@ bool Shader::compile()
 	}
 
 	glValidateProgram(program);
-	glGetProgramiv(program,GL_VALIDATE_STATUS,&reasult);
-	if(reasult == 0)
+	glGetProgramiv(program,GL_VALIDATE_STATUS,&result);
+	if(result == 0)
 	{
 		char* data = new char[2001];
 		int length;
@@ -91,9 +91,9 @@ bool Shader::addProgram(string text, GLenum type)
 	glCompileShader(shader);
 
 	//Check vertex shader for errors
-	GLint reasult = GL_FALSE;
-	glGetShaderiv( shader, GL_COMPILE_STATUS, &reasult );
-	if(reasult != GL_TRUE)
+	GLint result = GL_FALSE;
+	glGetShaderiv( shader, GL_COMPILE_STATUS, &result );
+	if(result != GL_TRUE)
 	{
 		char* data = new char[2001];
 		int length;
@@ -122,98 +122,98 @@ bool Shader::addProgram(string text, GLenum type)
 
 bool Shader::setParameter(string name,float val)
 {
-	//GLint uniformLodation = glGetUniformLocation(program,name.c_str());
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	//GLint uniformLocation = glGetUniformLocation(program,name.c_str());
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform1f(uniformLodation,val);
+	glUniform1f(uniformLocation,val);
 	return true;
 }
 
 bool Shader::setParameter(string name, vec2 val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform2fv(uniformLodation,1,(float*)&val);
+	glUniform2fv(uniformLocation,1,(float*)&val);
 	return true;
 }
 
 bool Shader::setParameter(string name, vec3 val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform3fv(uniformLodation,1,(float*)&val);
+	glUniform3fv(uniformLocation,1,(float*)&val);
 	return true;
 }
 
 bool Shader::setParameter(string name, vec4 val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform4fv(uniformLodation,1,(float*)&val);
+	glUniform4fv(uniformLocation,1,(float*)&val);
 	return true;
 }
 
 bool Shader::setParameter(string name, mat3x3 val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniformMatrix3fv(uniformLodation,1,GL_FALSE,(float*)&val);
+	glUniformMatrix3fv(uniformLocation,1,GL_FALSE,(float*)&val);
 	return true;
 }
 
 bool Shader::setParameter(string name, mat4x4 val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniformMatrix4fv(uniformLodation,1,GL_FALSE,(float*)&val);
+	glUniformMatrix4fv(uniformLocation,1,GL_FALSE,(float*)&val);
 	return true;
 }
 
 bool Shader::setParameter(string name, bool val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform1i(uniformLodation,val);
+	glUniform1i(uniformLocation,val);
 	return true;
 }
 
 bool Shader::setParameter(string name, int val)
 {
-	GLint uniformLodation = getUniform(name);
-	if(uniformLodation == -1)
+	GLint uniformLocation = getUniform(name);
+	if(uniformLocation == -1)
 	{
 		cout << "Error : Uniform \"" << name << "\" not found" << endl;
 		return false;
 	}
-	glUniform1i(uniformLodation,val);
+	glUniform1i(uniformLocation,val);
 	return true;
 }
 
