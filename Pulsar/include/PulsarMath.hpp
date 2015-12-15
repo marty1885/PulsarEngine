@@ -20,7 +20,7 @@ namespace Pulsar
 }
 
 
-//FIXME : This class does not work when decleared in a namespace
+//FIXME : This class does not work when declared in a namespace
 template <class scalar> class Quat
 {
 public:
@@ -30,11 +30,10 @@ public:
 
 	// Constructors
 	Quat(){ w = 0; x = 0; y = 0; z = 0; }
-	Quat(const scalar& w0){ w = w0; x = 0; y = 0; z = 0; }				  // Scalar
-	Quat(scalar w0, scalar x0){ w = w0; x = x0; y = 0; z = 0; }				 // Complex
-	Quat(scalar x0, scalar y0, scalar z0){ w = 0; x = x0; y = y0; z = z0; }		 // Vector
-	Quat(scalar w0, scalar x0, scalar y0, scalar z0) { w = w0; x = x0; y = y0; z = z0; }	// Quaternion
-	Quat(glm::vec4 V) { w = 0; x = V.x; y = V.y; z = V.z; }
+	Quat(const scalar& w0){ w = w0; x = 0; y = 0; z = 0; } // Scalar
+	Quat(scalar x0, scalar y0, scalar z0){ w = 0; x = x0; y = y0; z = z0; }	// Vector
+	Quat(scalar w0, scalar x0, scalar y0, scalar z0) { w = w0; x = x0; y = y0; z = z0; } // Quaternion
+	Quat(glm::vec4 V) { x = V.x; y = V.y; z = V.z; w = V.w; }
 	Quat(glm::vec3 V) { x = V.x; y = V.y; z = V.z; }
 
 	// Assignment (Conversion from scalar to Quat)
@@ -64,7 +63,7 @@ public:
 	// &= operator (Inner product)
 	Quat& operator&=(const Quat& R)
 	{
-		w = w*R.w + x*R.x + y*R.y + z*R.z;
+		w = x*R.x + y*R.y + z*R.z;
 		x = 0; y = 0; z = 0;
 		return *this;
 	}
@@ -116,7 +115,7 @@ public:
 	friend Quat operator*(Quat L, const Quat& R) { return L *= R; }
 
 	// & operator (Inner product)
-	friend scalar operator&(Quat L, const Quat& R) { return L.w*R.w - L.x*R.x - L.y*R.y - L.z*R.z; }
+	friend scalar operator&(Quat L, const Quat& R) { return L &= R; }
 
 	// % operator (Outer product)
 	friend Quat operator%(Quat L, const Quat& R) { return L %= R; }
@@ -149,7 +148,6 @@ public:
 	// GLM typecasts
 	operator glm::vec4() const { return glm::vec4(x,y,z,w); }
 	operator glm::vec3() const { return glm::vec3(x,y,z); }	 // Vector part
-	operator glm::vec2() const { return glm::vec2(w,x); }	   // Complex part
 
 };
 
