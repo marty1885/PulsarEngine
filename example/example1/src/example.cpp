@@ -31,9 +31,9 @@ protected:
 	MaterialShader* normalShader;
 	Texture* texture;
 	Camera* camera;
-	SceneNode* rootNode;
-	SceneMeshItem* meshItem;
-	SceneModelItem* modelItem;
+	// SceneNode* rootNode;
+	// SceneMeshItem* meshItem;
+	// SceneModelItem* modelItem;
 };
 
 MainWindow::MainWindow()
@@ -50,7 +50,7 @@ MainWindow::MainWindow()
 	result &= shader->compile();
 
 	normalShader = new MaterialShader;
-	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
+	result &= normalShader->addVertexShader(File::readAllText("data/shader/Normal.vs"));
 	result &= normalShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
 	result &= normalShader->compile();
 	if(result == false)
@@ -107,13 +107,13 @@ MainWindow::MainWindow()
 	model = new Model;
 	model->load("data/model/monkey.obj");
 
-	rootNode = new SceneNode;
+	/*rootNode = new SceneNode;
 	meshItem = new SceneMeshItem(mesh);
 	meshItem->setShader(shader);
 	rootNode->addItem(meshItem);
 
 	modelItem = new SceneModelItem(model,normalShader);
-	rootNode->addItem(modelItem);
+	rootNode->addItem(modelItem);*/
 
 	Projection projection;
 	projection.setProjection(radians(70.0f),1200.0f,720.0f,0.01f,50.0f);
@@ -130,9 +130,9 @@ MainWindow::~MainWindow()
 	delete model;
 	delete camera;
 	delete texture;
-	delete rootNode;
-	delete meshItem;
-	delete modelItem;
+	// delete rootNode;
+	// delete meshItem;
+	// delete modelItem;
 }
 
 void MainWindow::render()
@@ -150,10 +150,19 @@ void MainWindow::render()
 	//transform.rotate(vec3(cos(val*3.14)*3.14,sin(val*3.14)*3.14,0));
 	//transform.rotate(vec3(0.5*3.14f,0,0));
 
-	meshItem->setTransform(transform);
+	//meshItem->setTransform(transform);
+
+	//TODO: Reinplment scene graph and improve shader system
+	shader->setTransformation(transform.getTransformation());
+	shader->setCamera(camera);
+	Projection proj = camera->getProjection();
+	shader->setProjection(&proj);
+	shader->bind();
+	mesh->render();
+	shader->unbind();
 
 	val += 0.004*scal;
-	rootNode->render(camera);
+	//rootNode->render(camera);
 }
 
 void MainWindow::update()
