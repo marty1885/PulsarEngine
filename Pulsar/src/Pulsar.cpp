@@ -40,12 +40,12 @@ void Renderer::setClearColor(vec3 color)
 	clearColor = color;
 }
 
-vec3 Transform::getTranslation()
+vec3 Transform::getTranslation() const
 {
 	return translation;
 }
 
-mat4x4 Transform::getTransformation()
+mat4x4 Transform::getTransformation() const
 {
 	mat4x4 translationMatrix = getTranlationMatrix();
 	mat4x4 rotationMatrix = getRotationMatrix();
@@ -69,7 +69,7 @@ void Transform::scale(vec3 vec)
 	scaling = vec;
 }
 
-mat4x4 Transform::getRotationMatrix()
+mat4x4 Transform::getRotationMatrix() const
 {
 	mat4x4 rx;
 	mat4x4 ry;
@@ -81,12 +81,12 @@ mat4x4 Transform::getRotationMatrix()
 	return rz*ry*rx;
 }
 
-mat4x4 Transform::getScalingMatrix()
+mat4x4 Transform::getScalingMatrix() const
 {
 	return glm::scale(scaling);
 }
 
-mat4x4 Transform::getTranlationMatrix()
+mat4x4 Transform::getTranlationMatrix() const
 {
 	return glm::translate(translation);
 }
@@ -100,7 +100,7 @@ void Projection::setProjection(float f, float w, float h, float near, float far)
 	zFar = far;
 }
 
-mat4x4 Projection::getProjectionMatrix()
+mat4x4 Projection::getProjectionMatrix() const
 {
 	return glm::perspective(fov,width/height,zNear,zFar);
 }
@@ -134,7 +134,7 @@ Camera::Camera()
 	up = vec3(0,1,0);
 }
 
-mat4x4 Camera::getCameraMatrix()
+mat4x4 Camera::getCameraMatrix() const
 {
 	mat4x4 viewMatrix = glm::lookAt(position, direction+position, up);
 	return viewMatrix;
@@ -175,27 +175,27 @@ void Camera::setUp(vec3 upVec)
 	up = upVec;
 }
 
-vec3 Camera::getPosition()
+vec3 Camera::getPosition() const
 {
 	return position;
 }
 
-vec3 Camera::getDirection()
+vec3 Camera::getDirection() const
 {
 	return direction;
 }
 
-vec3 Camera::getRight()
+vec3 Camera::getRight() const
 {
 	return normalize(cross(direction,up));
 }
 
-vec3 Camera::getUp()
+vec3 Camera::getUp() const
 {
 	return up;
 }
 
-Projection Camera::getProjection()
+Projection Camera::getProjection() const
 {
 	return projection;
 }

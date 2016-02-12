@@ -29,15 +29,15 @@ class Transform
 {
 public:
 
-	vec3 getTranslation();
-	mat4x4 getTransformation();
-	mat4x4 getScalingMatrix();
-	mat4x4 getTranlationMatrix();
+	vec3 getTranslation() const;
+	mat4x4 getTransformation() const;
+	mat4x4 getScalingMatrix() const;
+	mat4x4 getTranlationMatrix() const;
 	void translate(vec3 vec);
 	void rotate(vec3 vec);
 	void scale(vec3 vec);
 
-	mat4x4 getRotationMatrix();
+	mat4x4 getRotationMatrix() const;
 protected:
 	vec3 translation = vec3(0,0,0);
 	vec3 rotation = vec3(0,0,0);
@@ -48,7 +48,7 @@ class Projection
 {
 public:
 	void setProjection(float f, float w, float h, float near, float far);
-	mat4x4 getProjectionMatrix();
+	mat4x4 getProjectionMatrix() const;
 protected:
 	float zNear;
 	float zFar;
@@ -77,14 +77,14 @@ public:
 	void setDirection(vec3 dir);
 	void setUp(vec3 upVec);
 
-	vec3 getPosition();
-	vec3 getDirection();
-	vec3 getRight();
-	vec3 getUp();
+	vec3 getPosition() const;
+	vec3 getDirection() const;
+	vec3 getRight() const;
+	vec3 getUp() const;
 
-	mat4x4 getCameraMatrix();
+	mat4x4 getCameraMatrix() const;
 
-	Projection getProjection();
+	Projection getProjection() const;
 	void setProjection(Projection proj);
 protected:
 	vec3 position;
