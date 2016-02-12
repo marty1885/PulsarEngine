@@ -48,22 +48,28 @@ protected:
 	unordered_map<string,GLint> uniforms;
 };
 
-class MaterialShader : public Shader
+class ThreeDShader : public Shader
 {
 public:
-	void setTexture(Texture* tex);
-	virtual bool compile();
-	virtual void bind();
-	virtual void unbind();
-	void setTransformation(mat4 transformation);
-	void setCamera(Camera* cam);
-	void setProjection(Projection* project);
+	bool compile();
+	void bind();
+	void unbind();
+	virtual void setTransformation(mat4 transformation);
+	virtual void setCamera(Camera* cam);
+	virtual void setProjection(Projection* project);
 
 protected:
 	Texture* texture = NULL;
 	mat4 transformMatrix;
 	Camera* camera = NULL;
 	Projection* projection = NULL;
+};
+
+class MaterialShader : public ThreeDShader
+{
+public:
+	virtual void setTexture(Texture* tex);
+	void bind();
 };
 
 }

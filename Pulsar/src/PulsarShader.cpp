@@ -2,6 +2,8 @@
 #include <PulsarTexture.hpp>
 using namespace Pulsar;
 
+#include <typeinfo>
+
 Shader::Shader()
 {
 	program = glCreateProgram();
@@ -246,14 +248,7 @@ GLint Shader::getUniform(string name)
 	return search->second;
 }
 
-
-
-void MaterialShader::setTexture(Texture* tex)
-{
-	texture = tex;
-}
-
-bool MaterialShader::compile()
+bool ThreeDShader::compile()
 {
 	bool success = true;
 	success = Shader::compile();
@@ -266,7 +261,7 @@ bool MaterialShader::compile()
 	{
 		if(getUniform(str) == -1)
 		{
-			cout << "Warrning : Missing uniform \"" << str << "\" in MaterialShader. Maybe some programming error has occurred." << endl;
+			cout << "Warrning : Missing uniform \"" << str << "\" in " << typeid(*this).name() <<". Maybe some programming error has occurred." << endl;
 			success = false;
 		}
 	}
@@ -275,6 +270,36 @@ bool MaterialShader::compile()
 		return false;
 
 	return true;
+}
+
+void ThreeDShader::bind()
+{
+	Shader::bind();
+	setParameter("transform",transformMatrix);
+	setParameter("camera",camera->getCameraMatrix());
+	setParameter("projection",projection->getProjectionMatrix());
+}
+
+void ThreeDShader::unbind()
+{
+	if(texture != NULL)
+		texture->unbind();
+	Shader::unbind();
+}
+
+void ThreeDShader::setTransformation(mat4 transformation)
+{
+	transformMatrix = transformation;
+}
+
+void ThreeDShader::setCamera(Camera* cam)
+{
+	camera = cam;
+}
+
+void ThreeDShader::setProjection(Projection* project)
+{
+	projection = project;
 }
 
 void MaterialShader::bind()
@@ -288,24 +313,7 @@ void MaterialShader::bind()
 	setParameter("projection",projection->getProjectionMatrix());
 }
 
-void MaterialShader::unbind()
+void MaterialShader::setTexture(Texture* tex)
 {
-	if(texture != NULL)
-		texture->unbind();
-	Shader::unbind();
-}
-
-void MaterialShader::setTransformation(mat4 transformation)
-{
-	transformMatrix = transformation;
-}
-
-void MaterialShader::setCamera(Camera* cam)
-{
-	camera = cam;
-}
-
-void MaterialShader::setProjection(Projection* project)
-{
-	projection = project;
+	texture = tex;
 }
