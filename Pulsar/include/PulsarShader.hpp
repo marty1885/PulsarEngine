@@ -59,7 +59,6 @@ public:
 	virtual void setProjection(Projection* project);
 
 protected:
-	Texture* texture = NULL;
 	mat4 transformMatrix;
 	Camera* camera = NULL;
 	Projection* projection = NULL;
@@ -70,6 +69,9 @@ class MaterialShader : public ThreeDShader
 public:
 	virtual void setTexture(Texture* tex);
 	void bind();
+
+protected:
+	Texture* texture = NULL;
 };
 
 }

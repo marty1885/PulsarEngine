@@ -261,7 +261,7 @@ bool ThreeDShader::compile()
 	{
 		if(getUniform(str) == -1)
 		{
-			cout << "Warrning : Missing uniform \"" << str << "\" in " << typeid(*this).name() <<". Maybe some programming error has occurred." << endl;
+			cout << "Warrning : Missing uniform \"" << str << "\" in " << typeid(*this).name() << endl;
 			success = false;
 		}
 	}
@@ -282,8 +282,6 @@ void ThreeDShader::bind()
 
 void ThreeDShader::unbind()
 {
-	if(texture != NULL)
-		texture->unbind();
 	Shader::unbind();
 }
 
@@ -307,10 +305,7 @@ void MaterialShader::bind()
 	if(texture != NULL)
 		texture->bind();
 
-	Shader::bind();
-	setParameter("transform",transformMatrix);
-	setParameter("camera",camera->getCameraMatrix());
-	setParameter("projection",projection->getProjectionMatrix());
+	ThreeDShader::bind();
 }
 
 void MaterialShader::setTexture(Texture* tex)
