@@ -153,7 +153,7 @@ void MainWindow::render()
 	//meshItem->setTransform(transform);
 
 	//TODO: Reinplment scene graph and improve shader system
-	shader->setTransformation(transform.getTransformation());
+	shader->setTransformation(transform.getTransformMatrix());
 	shader->setCamera(camera);
 	Projection proj = camera->getProjection();
 	shader->setProjection(&proj);

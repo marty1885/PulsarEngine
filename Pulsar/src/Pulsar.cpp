@@ -45,7 +45,7 @@ vec3 Transform::getTranslation() const
 	return translation;
 }
 
-mat4x4 Transform::getTransformation() const
+mat4x4 Transform::getTransformMatrix() const
 {
 	mat4x4 translationMatrix = getTranlationMatrix();
 	mat4x4 rotationMatrix = getRotationMatrix();

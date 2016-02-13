@@ -10,7 +10,7 @@ void SceneItem::setTransform(Transform transformation)
 
 void SceneNode::render(Camera* camera, mat4 preTransformMatrix)
 {
-	mat4 currentMatrix = transform.getTransformation()*preTransformMatrix;
+	mat4 currentMatrix = transform.getTransformMatrix()*preTransformMatrix;
 	for(SceneItem*& item : childItems)
 		item->render(camera,currentMatrix);
 
@@ -39,7 +39,7 @@ void SceneMeshItem::render(Camera* camera, mat4 preTransformMatrix)
 	if(shader != NULL)
 	{
 		shader->setCamera(camera);
-		shader->setTransformation(transform.getTransformation()*preTransformMatrix);
+		shader->setTransformation(transform.getTransformMatrix()*preTransformMatrix);
 		Projection projection = camera->getProjection();
 		shader->setProjection(&projection);
 		shader->bind();
@@ -89,7 +89,7 @@ void SceneModelItem::render(Camera* camera, mat4 preTransformMatrix)
 {
 	if(shader != NULL)
 	{
-		mat4 currentMatrix = transform.getTransformation()*preTransformMatrix;
+		mat4 currentMatrix = transform.getTransformMatrix()*preTransformMatrix;
 		for(SceneMeshItem*& item : meshItems)
 			item->render(camera,currentMatrix);
 	}

@@ -30,7 +30,7 @@ class Transform
 public:
 
 	vec3 getTranslation() const;
-	mat4x4 getTransformation() const;
+	mat4x4 getTransformMatrix() const;
 	mat4x4 getScalingMatrix() const;
 	mat4x4 getTranlationMatrix() const;
 	void translate(vec3 vec);
