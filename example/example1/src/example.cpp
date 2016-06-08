@@ -46,12 +46,12 @@ MainWindow::MainWindow()
 	bool result = true;
 	shader = new MaterialShader;
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= shader->addFragmentShader(File::readAllText("data/shader/test.fs"));
+	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= shader->compile();
 
 	normalShader = new MaterialShader;
 	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= normalShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
+	result &= normalShader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= normalShader->compile();
 	if(result == false)
 	{
@@ -140,7 +140,7 @@ void MainWindow::render()
 	renderer.clearScreen();
 	renderer.initFrame();
 
-	static float val = 1;
+	static float val = 0;
 	static float scal = 1;
 
 	Transform transform;
@@ -148,9 +148,9 @@ void MainWindow::render()
 	//transform.scale(vec3(1,1,1));
 	//transform.translate(vec3(0,0,0));
 	//transform.rotate(vec3(cos(val*3.14)*3.14,sin(val*3.14)*3.14,0));
-	//transform.rotate(vec3(0.5*3.14f,0,0));
+	transform.rotate(vec3(0,val*3.14f,0));
 
-	meshItem->setTransform(transform);
+	rootNode->setTransform(transform);
 
 	val += 0.004*scal;
 	rootNode->render(camera);
