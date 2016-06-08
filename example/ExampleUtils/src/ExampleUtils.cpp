@@ -4,45 +4,38 @@ using namespace glm;
 
 bool Window::createWindow(int width,int height, const char* title)
 {
-	bool success = true;
-	if(SDL_Init(SDL_INIT_VIDEO)<0)
+	if(SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		cout << "Failed to init SDL Error : "
-			<< SDL_GetError() << endl;
-		success = false;
+		cout << "Failed to init SDL Error : " << SDL_GetError() << endl;
+		return false;
 	}
-	else
+
+	//Use OpenGL 3.3 core
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+			width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	if(window == NULL)
 	{
-		//Use OpenGL 3.3 core
-		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 3 );
-		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 3 );
-		SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK,
-				SDL_GL_CONTEXT_PROFILE_CORE );
-
-		window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-				width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
-		if(window == NULL)
-		{
-			cout << "failed to create window Error : " << SDL_GetError() << endl;
-			success = false;
-		}
-		else
-		{
-			context = SDL_GL_CreateContext(window);
-			if(context == NULL)
-			{
-				cout << "Faied to create OpenGL Context .Error : " << SDL_GetError() << endl;
-				success = false;
-			}
-			else
-			{
-				if(SDL_GL_SetSwapInterval(1) < 0)
-					cout << "Warrning unable to activate Vsync. Error : " << SDL_GetError() << endl;
-			}
-		}
-
+		cout << "Failed to create window. Error : " << SDL_GetError() << endl;
+		return false;
 	}
-	return success;
+
+	SDL_SetWindowSize(window, width, height);
+	context = SDL_GL_CreateContext(window);
+	if(context == NULL)
+	{
+		cout << "Failed to create OpenGL context. Error : " << SDL_GetError() << endl;
+		return false;
+	}
+
+	//NOTE:Do we really want VSync?
+	if(SDL_GL_SetSwapInterval(1) < 0)
+		cout << "Warning: unable to activate Vsync. Error : " << SDL_GetError() << endl;
+
+	return true;
 }
 
 void Window::loop()
