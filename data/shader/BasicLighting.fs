@@ -28,6 +28,6 @@ void main()
 	const float gamma = 2.2f;
 	const float inverseGamma = 1.0f/gamma;
 	renderedColor = max(renderedColor,vec3(0,0,0));
-	renderedColor = pow(renderedColor,vec3(inverseGamma));
-	color = vec4(renderedColor,1);
+	vec3 correctedColor = pow(renderedColor,vec3(inverseGamma));
+	color = vec4(correctedColor,1);
 }
