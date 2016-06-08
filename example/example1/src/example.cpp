@@ -46,12 +46,12 @@ MainWindow::MainWindow()
 	bool result = true;
 	shader = new MaterialShader;
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
+	result &= shader->addFragmentShader(File::readAllText("data/shader/test.fs"));
 	result &= shader->compile();
 
 	normalShader = new MaterialShader;
 	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= normalShader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
+	result &= normalShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
 	result &= normalShader->compile();
 	if(result == false)
 	{
