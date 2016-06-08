@@ -46,7 +46,7 @@ MainWindow::MainWindow()
 	bool result = true;
 	shader = new MaterialShader;
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= shader->addFragmentShader(File::readAllText("data/shader/test.fs"));
+	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= shader->compile();
 
 	normalShader = new MaterialShader;
@@ -112,7 +112,7 @@ MainWindow::MainWindow()
 	meshItem->setShader(shader);
 	rootNode->addItem(meshItem);
 
-	modelItem = new SceneModelItem(model,normalShader);
+	modelItem = new SceneModelItem(model,shader);
 	rootNode->addItem(modelItem);
 
 	Projection projection;
@@ -184,7 +184,6 @@ void MainWindow::update()
 	{
 		vec2 diff = mousePos - lastMousePos;
 
-		//FIXME: fixed
 		Quatf rotateVector = diff.x * camera->getUp() + diff.y * camera->getRight();
 		Quatf rotor = exp(0.003 * rotateVector);
 
