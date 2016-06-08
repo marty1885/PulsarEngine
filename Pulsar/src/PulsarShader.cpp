@@ -261,7 +261,7 @@ bool MaterialShader::compile()
 		return false;
 
 	//Check if all uniforms we need are avliable
-	string requiredUniform [] = {"transform","camera","projection"};
+	string requiredUniform [] = {"transformMatrix","cameraMatrix","projectionMatrix"};
 	for(string& str : requiredUniform)
 	{
 		if(getUniform(str) == -1)
@@ -283,9 +283,9 @@ void MaterialShader::bind()
 		texture->bind();
 
 	Shader::bind();
-	setParameter("transform",transformMatrix);
-	setParameter("camera",camera->getCameraMatrix());
-	setParameter("projection",projection->getProjectionMatrix());
+	setParameter("transformMatrix",transformMatrix);
+	setParameter("cameraMatrix",camera->getCameraMatrix());
+	setParameter("projectionMatrix",projection->getProjectionMatrix());
 }
 
 void MaterialShader::unbind()

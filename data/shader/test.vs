@@ -1,8 +1,8 @@
 #version 330 core
 
-uniform mat4 transform;
-uniform mat4 camera;
-uniform mat4 projection;
+uniform mat4 transformMatrix;
+uniform mat4 cameraMatrix;
+uniform mat4 projectionMatrix;
 
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 textCoord;
@@ -14,8 +14,8 @@ out vec3 normalVec;
 
 void main()
 {
-	gl_Position = projection*camera*transform*vec4(position,1.0);
+	gl_Position = projectionMatrix*cameraMatrix*transformMatrix*vec4(position,1.0);
 	textureCoord = textCoord;
-	normalVec = (transform*vec4(normal,0.0)).xyz;
-	vertexCoord = (transform*vec4(position,1.0)).xyz;
+	normalVec = (transformMatrix*vec4(normal,0.0)).xyz;
+	vertexCoord = (transformMatrix*vec4(position,1.0)).xyz;
 }

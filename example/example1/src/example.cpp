@@ -191,14 +191,6 @@ void MainWindow::update()
 		vec3 direction =  rotor * camera->getDirection() * ~rotor;
 		camera->setDirection(direction);
 
-		//HACK : This works but not well
-		/*camera->rotateX(diff.y/3.14/50);
-		camera->rotateY(diff.x/3.14/50);
-		vec3 direction = camera->getDirection();
-		vec3 up = normalize(cross(cross(direction,vec3(0,1,0)),direction));
-		camera->setUp(up);
-		camera->setDirection(direction);*/
-
 		//cout << direction.x << "\t" << direction.y << "\t" << direction.z << endl;
 	}
 	lastMousePos = mousePos;

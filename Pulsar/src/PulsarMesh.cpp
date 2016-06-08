@@ -64,17 +64,28 @@ bool Model::load(string path)
 		else
 			for(int j=0;j<verticesNum;j++)
 			{
-				normals[j*3+0] = 1;
+				normals[j*3+0] = 0;
 				normals[j*3+1] = 1;
-				normals[j*3+2] = 1;
+				normals[j*3+2] = 0;
 			}
 		newMesh->setNormals((vec3*)normals,verticesNum);
 
 		float* uvs = new float[mesh->mNumVertices*2];
-		for(int j=0;j<verticesNum;j++)
+		if(mesh->mNumUVComponents[0])
 		{
-			uvs[j*2+0] = 0;
-			uvs[j*2+1] = 0;
+			for(int j=0;j<verticesNum;j++)
+			{
+				uvs[j*2+0] = mesh->mTextureCoords[0][j][0];
+				uvs[j*2+1] = mesh->mTextureCoords[0][j][1];
+			}
+		}
+		else
+		{
+			for(int j=0;j<verticesNum;j++)
+			{
+				uvs[j*2+0] = 0;
+				uvs[j*2+1] = 0;
+			}
 		}
 
 		newMesh->setTextureCoord((vec2*)uvs, verticesNum);
