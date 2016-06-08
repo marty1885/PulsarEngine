@@ -9,7 +9,7 @@ uniform sampler2D surfaceTexture;
 
 void main()
 {
-	const vec3 lightPos = vec3(0.4,2,0);
+	const vec3 lightPos = vec3(3,2,0);
 	const vec3 strength = vec3(1,1,1)*3.0f;
 	vec3 diff = lightPos-vertexCoord;
 	vec3 directionVec = normalize(diff);

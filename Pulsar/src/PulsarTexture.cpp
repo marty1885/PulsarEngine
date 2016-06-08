@@ -135,7 +135,7 @@ bool Texture::load(Image* image)
 	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_FLOAT, image->getRaw());
 
 	//NOTE : The "levels" argument must be n^2 on AMD GPU + Mesa Driver. not sure if required on AMD priority drivers.
-	//FIXME : The following commented code does not work on AMD GPU + Mesa Driver. Using old API insted. Waiting for a workarround
+	//FIXME : The following commented code is for OpenGL 4.2+. Use it if we want 4.2+ support
 	// glTexStorage2D(GL_TEXTURE_2D, 4, GL_RGBA8, image->getWidth(), image->getHeight());
 	// glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->getWidth(), image->getHeight(), GL_RGBA, GL_FLOAT, image->getRaw());
 
@@ -158,13 +158,11 @@ void Texture::unload()
 
 void Texture::bind()
 {
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, id);
 }
 
 void Texture::unbind()
 {
-	glDisable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

@@ -92,7 +92,7 @@ bool Shader::addProgram(string text, GLenum type)
 
 	//Check vertex shader for errors
 	GLint result = GL_FALSE;
-	glGetShaderiv( shader, GL_COMPILE_STATUS, &result );
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 	if(result != GL_TRUE)
 	{
 		char* data = new char[2001];
