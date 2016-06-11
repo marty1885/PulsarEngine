@@ -48,7 +48,7 @@ protected:
 	unordered_map<string,GLint> uniforms;
 };
 
-class MaterialShader : public Shader
+class ThreeDShader : public Shader
 {
 public:
 	void setTexture(Texture* tex);
@@ -65,6 +65,10 @@ protected:
 	mat4 transformMatrix;
 	Camera* camera = NULL;
 	Projection* projection = NULL;
+};
+
+class MaterialShader : public ThreeDShader
+{
 };
 
 }

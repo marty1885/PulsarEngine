@@ -28,7 +28,7 @@ void SceneNode::addNode(SceneNode* node)
 	childNodes.push_back(node);
 }
 
-SceneMeshItem::SceneMeshItem(Mesh* m, MaterialShader* s)
+SceneMeshItem::SceneMeshItem(Mesh* m, ThreeDShader* s)
 {
 	mesh = m;
 	shader = s;
@@ -48,12 +48,12 @@ void SceneMeshItem::render(Camera* camera, mat4 preTransformMatrix)
 	}
 }
 
-void SceneMeshItem::setShader(MaterialShader* materialShader)
+void SceneMeshItem::setShader(ThreeDShader* ThreeDShader)
 {
-	shader = materialShader;
+	shader = ThreeDShader;
 }
 
-SceneModelItem::SceneModelItem(Model* m, MaterialShader* s)
+SceneModelItem::SceneModelItem(Model* m, ThreeDShader* s)
 {
 	shader = s;
 	setModel(m);
@@ -79,10 +79,10 @@ void SceneModelItem::setModel(Model* m)
 	}
 }
 
-void SceneModelItem::setShader(MaterialShader* materialShader)
+void SceneModelItem::setShader(ThreeDShader* ThreeDShader)
 {
 	for(SceneMeshItem*& item : meshItems)
-		item->setShader(materialShader);
+		item->setShader(ThreeDShader);
 }
 
 void SceneModelItem::render(Camera* camera, mat4 preTransformMatrix)

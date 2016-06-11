@@ -253,12 +253,12 @@ GLint Shader::getUniform(string name)
 
 
 
-void MaterialShader::setTexture(Texture* tex)
+void ThreeDShader::setTexture(Texture* tex)
 {
 	texture = tex;
 }
 
-bool MaterialShader::compile()
+bool ThreeDShader::compile()
 {
 	bool success = true;
 	success = Shader::compile();
@@ -271,7 +271,7 @@ bool MaterialShader::compile()
 	{
 		if(getUniform(str) == -1)
 		{
-			cout << "Warrning : Missing uniform \"" << str << "\" in MaterialShader. Maybe some programming error has occurred." << endl;
+			cout << "Warrning : Missing uniform \"" << str << "\" in ThreeDShader. Maybe some programming error has occurred." << endl;
 			success = false;
 		}
 	}
@@ -282,7 +282,7 @@ bool MaterialShader::compile()
 	return true;
 }
 
-void MaterialShader::bind()
+void ThreeDShader::bind()
 {
 	if(texture != NULL)
 		texture->bind();
@@ -291,29 +291,29 @@ void MaterialShader::bind()
 	updateInternalParametes();
 }
 
-void MaterialShader::unbind()
+void ThreeDShader::unbind()
 {
 	if(texture != NULL)
 		texture->unbind();
 	Shader::unbind();
 }
 
-void MaterialShader::setTransformation(mat4 transformation)
+void ThreeDShader::setTransformation(mat4 transformation)
 {
 	transformMatrix = transformation;
 }
 
-void MaterialShader::setCamera(Camera* cam)
+void ThreeDShader::setCamera(Camera* cam)
 {
 	camera = cam;
 }
 
-void MaterialShader::setProjection(Projection* project)
+void ThreeDShader::setProjection(Projection* project)
 {
 	projection = project;
 }
 
-void MaterialShader::updateInternalParametes()
+void ThreeDShader::updateInternalParametes()
 {
 	setParameter("transformMatrix",transformMatrix);
 	setParameter("cameraMatrix",camera->getCameraMatrix());

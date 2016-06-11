@@ -68,32 +68,32 @@ protected:
 	Transform transform;
 };
 
-class MaterialShader;
+class ThreeDShader;
 
 class SceneMeshItem : public SceneItem
 {
 public:
-	SceneMeshItem(Mesh* m = NULL, MaterialShader* s = NULL);
+	SceneMeshItem(Mesh* m = NULL, ThreeDShader* s = NULL);
 	void render(Camera* camera, mat4 preTransformMatrix = mat4());
-	void setShader(MaterialShader* materialShader);
+	void setShader(ThreeDShader* ThreeDShader);
 protected:
 	Mesh* mesh = NULL;
-	MaterialShader* shader = NULL;
+	ThreeDShader* shader = NULL;
 };
 
 class SceneModelItem : public SceneItem
 {
 public:
-	SceneModelItem(Model* m = NULL, MaterialShader* s = NULL);
+	SceneModelItem(Model* m = NULL, ThreeDShader* s = NULL);
 	virtual ~SceneModelItem();
 
 	void setModel(Model* m);
-	void setShader(MaterialShader* materialShader);
+	void setShader(ThreeDShader* ThreeDShader);
 	void render(Camera* camera, mat4 preTransformMatrix = mat4());
 	void releaseMeshItem();
 protected:
 	Model* model = NULL;
-	MaterialShader* shader = NULL;
+	ThreeDShader* shader = NULL;
 	vector<SceneMeshItem*> meshItems;
 };
 

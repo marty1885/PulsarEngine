@@ -27,8 +27,8 @@ protected:
 	Renderer renderer;
 	Mesh* mesh;
 	Model* model;
-	MaterialShader* shader;
-	MaterialShader* normalShader;
+	ThreeDShader* shader;
+	ThreeDShader* normalShader;
 	Texture* texture;
 	Camera* camera;
 	SceneNode* rootNode;
@@ -44,14 +44,14 @@ MainWindow::MainWindow()
 	renderer.setClearColor(vec3(0,0,0.2));
 
 	bool result = true;
-	shader = new MaterialShader;
+	shader = new ThreeDShader;
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
 	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= shader->compile();
 
-	normalShader = new MaterialShader;
+	normalShader = new ThreeDShader;
 	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= normalShader->addFragmentShader(File::readAllText("data/shader/Normal.fs"));
+	result &= normalShader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= normalShader->compile();
 	if(result == false)
 	{
@@ -112,7 +112,7 @@ MainWindow::MainWindow()
 	meshItem->setShader(shader);
 	rootNode->addItem(meshItem);
 
-	modelItem = new SceneModelItem(model,shader);
+	modelItem = new SceneModelItem(model,normalShader);
 	rootNode->addItem(modelItem);
 
 	Projection projection;
@@ -125,6 +125,11 @@ MainWindow::MainWindow()
 	shader->setParameter("pointLight.position",vec3(3,2,0));
 	shader->setParameter("pointLight.radiant",vec3(1,1,1)*3.0f);
 	shader->Shader::unbind();
+
+	normalShader->Shader::bind();
+	normalShader->setParameter("pointLight.position",vec3(3,2,0));
+	normalShader->setParameter("pointLight.radiant",vec3(1,1,1)*3.0f);
+	normalShader->Shader::unbind();
 }
 
 MainWindow::~MainWindow()
