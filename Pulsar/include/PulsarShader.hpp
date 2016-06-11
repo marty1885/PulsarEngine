@@ -43,7 +43,7 @@ protected:
 	void addAllUniform();
 	GLint getUniform(string text);
 
-	GLuint program;
+	GLuint program = 0;
 	vector<GLuint> shaderList;
 	unordered_map<string,GLint> uniforms;
 };
