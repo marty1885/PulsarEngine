@@ -95,9 +95,11 @@ bool Shader::addProgram(string text, GLenum type)
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
 	if(result != GL_TRUE)
 	{
-		char* data = new char[2001];
+		int size = -1;
+		glGetShaderiv(shader,GL_INFO_LOG_LENGTH,&size);
+		char* data = new char[size];
 		int length;
-		glGetShaderInfoLog(shader,2000,&length,data);
+		glGetShaderInfoLog(shader,size,&length,data);
 		string shaderType = "Unknown";
 		switch (type)
 		{
@@ -229,9 +231,8 @@ void Shader::addAllUniform()
 	{
 		int nameLen=-1, num=-1;
 		GLenum type = GL_ZERO;
-		glGetActiveUniform(program, GLuint(i), maxLength,
+		glGetActiveUniform(program, (GLuint)i, maxLength,
 			&nameLen, &num, &type, name);
-		name[nameLen] = 0;
 		GLuint location = glGetUniformLocation(program, name);
 		uniforms.insert({name,location});
 	}
