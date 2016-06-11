@@ -283,9 +283,7 @@ void MaterialShader::bind()
 		texture->bind();
 
 	Shader::bind();
-	setParameter("transformMatrix",transformMatrix);
-	setParameter("cameraMatrix",camera->getCameraMatrix());
-	setParameter("projectionMatrix",projection->getProjectionMatrix());
+	updateInternalParametes();
 }
 
 void MaterialShader::unbind()
@@ -308,4 +306,11 @@ void MaterialShader::setCamera(Camera* cam)
 void MaterialShader::setProjection(Projection* project)
 {
 	projection = project;
+}
+
+void MaterialShader::updateInternalParametes()
+{
+	setParameter("transformMatrix",transformMatrix);
+	setParameter("cameraMatrix",camera->getCameraMatrix());
+	setParameter("projectionMatrix",projection->getProjectionMatrix());
 }

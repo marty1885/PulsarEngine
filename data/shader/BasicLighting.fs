@@ -7,14 +7,20 @@ in vec2 textureCoord;
 
 uniform sampler2D surfaceTexture;
 
-void main()
+struct PointLight
 {
-	const vec3 lightPos = vec3(3,2,0);
-	const vec3 strength = vec3(1,1,1)*3.0f;
-	vec3 diff = lightPos-vertexCoord;
+	vec3 position;
+	vec3 radiant;
+};
+
+uniform PointLight pointLight;
+
+void main()
+{ 
+	vec3 diff = pointLight.position-vertexCoord;
 	vec3 directionVec = normalize(diff);
 	float dist = length(diff);
-	vec3 lightStrengthOnFragment = strength*(dot(normalVec,directionVec)/(dist*dist));
+	vec3 lightStrengthOnFragment = pointLight.radiant*(dot(normalVec,directionVec)/(dist*dist));
 
 	vec4 textureColor = texture(surfaceTexture,textureCoord);
 
