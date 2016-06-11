@@ -274,6 +274,8 @@ bool ThreeDShader::compile()
 		{
 			cout << "Warrning : Missing uniform \"" << str << "\" in ThreeDShader. Maybe some programming error has occurred." << endl;
 			success = false;
+			//do not break here, Print as more error message as possible.
+			//break;
 		}
 	}
 
