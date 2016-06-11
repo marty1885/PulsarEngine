@@ -9,8 +9,6 @@
 #include <vector>
 
 #include <PulsarMath.hpp>
-//Move the require classes to a idependent header
-#include <Pulsar.hpp>
 
 namespace Pulsar
 {
@@ -18,6 +16,8 @@ namespace Pulsar
 using namespace std;
 
 class Texture;
+class Camera;
+class Projection;
 
 class Shader
 {
@@ -38,12 +38,12 @@ public:
 	bool setParameter(string name, int val);
 	bool setParameter(string name, bool val);
 
-	GLuint program;
-
 protected:
 	bool addProgram(string text, GLenum type);
 	void addAllUniform();
 	GLint getUniform(string text);
+
+	GLuint program;
 	vector<GLuint> shaderList;
 	unordered_map<string,GLint> uniforms;
 };

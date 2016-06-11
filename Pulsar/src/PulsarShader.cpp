@@ -1,5 +1,6 @@
 #include <PulsarShader.hpp>
 #include <PulsarTexture.hpp>
+#include <Pulsar.hpp>
 using namespace Pulsar;
 
 Shader::Shader()
