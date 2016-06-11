@@ -37,9 +37,11 @@ bool Shader::compile()
 	glGetProgramiv(program,GL_LINK_STATUS,&result);
 	if(result != GL_TRUE)
 	{
-		char* data = new char[2001];
+		int size = -1;
+		glGetProgramiv(program,GL_INFO_LOG_LENGTH,&size);
+		char* data = new char[size];
 		int length;
-		glGetProgramInfoLog(program,2000,&length,data);
+		glGetProgramInfoLog(program,size,&length,data);
 		cout << "failed to link program" << endl << data << endl;
 		delete [] data;
 		return false;
@@ -49,9 +51,11 @@ bool Shader::compile()
 	glGetProgramiv(program,GL_VALIDATE_STATUS,&result);
 	if(result == 0)
 	{
-		char* data = new char[2001];
+		int size = -1;
+		glGetProgramiv(program,GL_INFO_LOG_LENGTH,&size);
+		char* data = new char[size];
 		int length;
-		glGetProgramInfoLog(program,2000,&length,data);
+		glGetProgramInfoLog(program,size,&length,data);
 		cout << "failed to validate program" << endl << data << endl;
 		delete [] data;
 		return false;
