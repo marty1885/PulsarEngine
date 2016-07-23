@@ -20,3 +20,7 @@ include_directories(Pulsar/include)
 add_subdirectory(Pulsar)
 
 add_subdirectory(example)
+
+# Copy data
+
+file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
