@@ -2,14 +2,12 @@
 #include <PulsarMesh.hpp>
 #include <PulsarShader.hpp>
 #include <PulsarScene.hpp>
-
+#include <PulsarWindow.hpp>
 using namespace Pulsar;
 
 #include <iostream>
 #include <string>
 using namespace std;
-
-#include <ExampleUtils.hpp>
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 720
@@ -120,7 +118,7 @@ MainWindow::MainWindow()
 
 	camera = new Camera(vec3(0,0.1,5),vec3(0,0,-1),vec3(0,1,0));
 	camera->setProjection(projection);
-	
+
 	shader->Shader::bind();
 	shader->setParameter("pointLight.position",vec3(3,2,0));
 	shader->setParameter("pointLight.radiant",vec3(1,1,1)*3.0f);

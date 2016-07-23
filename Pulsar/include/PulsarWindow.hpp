@@ -10,6 +10,9 @@
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 
+namespace Pulsar
+{
+
 class Window
 {
 public:
@@ -149,5 +152,6 @@ protected:
 	Key scanCodeToKey;
 };
 
+}
 
 #endif

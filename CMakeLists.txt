@@ -1,14 +1,16 @@
 cmake_minimum_required (VERSION 2.6)
 
+# Include directories
+include_directories(Pulsar/include)
 
-#output directories
+# Output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #option(DEBUG_MODE on)
 
-#setup some debug flags
+# Options
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} " -std=c++11 -fopenmp -Wall")
 if(DEBUG_MODE)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -O -g")
@@ -16,11 +18,5 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -O3 -ffast-math")
 endif()
 
-include_directories(Pulsar/include)
 add_subdirectory(Pulsar)
-
-add_subdirectory(example)
-
-# Copy data
-
-file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
+add_subdirectory(Examples)
