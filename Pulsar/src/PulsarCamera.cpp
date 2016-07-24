@@ -80,6 +80,11 @@ void Camera::rotateZ(float rad)
 	up = normalize(glm::rotate(up,rad,direction));
 }
 
+void Camera::setPosition(vec3 pos)
+{
+	position = pos;
+}
+
 void Camera::setDirection(vec3 dir)
 {
 	direction = dir;

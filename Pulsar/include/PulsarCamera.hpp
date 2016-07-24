@@ -32,6 +32,7 @@ namespace Pulsar
     	void rotateY(float rad);
     	void rotateZ(float rad);
 
+        void setPosition(vec3 pos);
     	void setDirection(vec3 dir);
     	void setUp(vec3 upVec);
         void setAspectRatio(float ratio);
