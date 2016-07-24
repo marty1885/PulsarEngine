@@ -52,7 +52,7 @@ namespace Pulsar
     public:
     	Camera();
         Camera(vec3 pos, vec3 dir, vec3 upVec);
-        Camera(vec3 camPosition, vec3 camDirection, vec3 camRight, vec3 camUp);
+        Camera(vec3 pos, vec3 dir, vec3 rightVec, vec3 upVec);
         void lookAt(vec3 pos, vec3 lookAt, vec3 upVec);
 
     	void move(vec3 dir);
@@ -81,9 +81,9 @@ namespace Pulsar
     	vec3 position;
     	vec3 direction;
     	vec3 up;
+        vec3 right;
     	Projection projection;
         float pixelAspectRatio = 1.0f;
-        vec3 right;
     };
 
     class PerspectiveCamera : public Camera

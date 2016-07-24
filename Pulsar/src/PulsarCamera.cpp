@@ -142,7 +142,7 @@ void PerspectiveCamera::setFOV(float fovX, float fovY)
 
 Ray PerspectiveCamera::createCameraRay(float2 uv) const
 {
-	vec3 rayVec = (uv.x*2.0f-1.0f)*right*tanf(fov.x*0.5f*pixelAspectRatio)
+	vec3 rayVec = (uv.x*2.0f-1.0f)*right*tanf(fov.x*0.5f) * pixelAspectRatio
 		+ (1.0f-uv.y*2.0f)*up*tanf(fov.y*0.5f)
 		+ direction;
 	rayVec = normalize(rayVec);
