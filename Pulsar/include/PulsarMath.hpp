@@ -60,6 +60,12 @@ namespace Pulsar
 		return out << "(" << v.x << ", " << v.y << ", " << v.z << ")" ;
 	}
 
+    // cout float2
+	inline std::ostream& operator<< (std::ostream& out, const float2 v)
+	{
+		return out << "(" << v.x << ", " << v.y << ")" ;
+	}
+
 	// input float4
 	inline std::istream& operator>>(std::istream& is, float4& v)
 	{
