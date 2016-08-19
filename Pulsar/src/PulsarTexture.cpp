@@ -62,8 +62,7 @@ void Image::save(string path)
 				image[i][j] = png::rgba_pixel(buffer[i*width+j].r*255,buffer[i*width+j].g*255
 					,buffer[i*width+j].b*255,buffer[i*width+j].w*255);
 			}
-
-			image.write(path);
+		image.write(path);
 	}
 	catch(...)
 	{

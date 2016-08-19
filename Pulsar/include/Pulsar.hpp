@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <PulsarMath.hpp>
+#include <PulsarCamera.hpp>
 
 #include <GL/glew.h>
 
@@ -44,53 +45,10 @@ protected:
 	vec3 scaling = vec3(1,1,1);
 };
 
-class Projection
-{
-public:
-	void setProjection(float f, float w, float h, float near, float far);
-	mat4x4 getProjectionMatrix();
-protected:
-	float zNear;
-	float zFar;
-	float width;
-	float height;
-	float fov;
-};
-
 class File
 {
 public:
 	static string readAllText(string path);
-};
-
-class Camera
-{
-public:
-	Camera(vec3 pos, vec3 dir, vec3 upVec);
-	Camera();
-
-	void move(vec3 dir);
-	void rotateX(float rad);
-	void rotateY(float rad);
-	void rotateZ(float rad);
-
-	void setDirection(vec3 dir);
-	void setUp(vec3 upVec);
-
-	vec3 getPosition();
-	vec3 getDirection();
-	vec3 getRight();
-	vec3 getUp();
-
-	mat4x4 getCameraMatrix();
-
-	Projection getProjection();
-	void setProjection(Projection proj);
-protected:
-	vec3 position;
-	vec3 direction;
-	vec3 up;
-	Projection projection;
 };
 
 }

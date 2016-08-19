@@ -2,17 +2,15 @@
 #include <PulsarMesh.hpp>
 #include <PulsarShader.hpp>
 #include <PulsarScene.hpp>
-
+#include <PulsarWindow.hpp>
 using namespace Pulsar;
 
 #include <iostream>
 #include <string>
 using namespace std;
 
-#include <ExampleUtils.hpp>
-
 #define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 720
+#define WINDOW_HEIGHT 800
 
 class MainWindow : public Window
 {
@@ -34,30 +32,45 @@ protected:
 	SceneNode* rootNode;
 	SceneMeshItem* meshItem;
 	SceneModelItem* modelItem;
+
+	void initMeshItem();
+	void initModelItem();
 };
 
 MainWindow::MainWindow()
 {
-	createWindow(WINDOW_WIDTH,WINDOW_HEIGHT,"PusarEngine Example 1");
+	createWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "PulsarEngine Example");
 
 	renderer.init();
-	renderer.setClearColor(vec3(0,0,0.2));
+	renderer.setClearColor(vec3(0, 0, 0.2));
 
+	initMeshItem();
+	initModelItem();
+
+	Projection projection;
+	projection.setProjection(radians(70.0f), WINDOW_WIDTH, WINDOW_HEIGHT, 0.01f, 50.0f);
+
+	camera = new Camera(vec3(0,0.1,5), vec3(0,0,-1), vec3(0,1,0));
+	camera->setProjection(projection);
+}
+
+void MainWindow::initMeshItem()
+{
 	bool result = true;
 	shader = new ThreeDShader;
 	result &= shader->addVertexShader(File::readAllText("data/shader/test.vs"));
 	result &= shader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
 	result &= shader->compile();
-
-	normalShader = new ThreeDShader;
-	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
-	result &= normalShader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
-	result &= normalShader->compile();
 	if(result == false)
 	{
 		terminate();
 		exit(0);
 	}
+
+	shader->Shader::bind();
+	shader->setParameter("pointLight.position",vec3(3, 2, 0));
+	shader->setParameter("pointLight.radiant",vec3(3.0f));
+	shader->Shader::unbind();
 
 	GLfloat vertices[] =
 	{
@@ -90,46 +103,47 @@ MainWindow::MainWindow()
 	};
 
 	mesh = new Mesh;
-	mesh->setVertices((vec3*)vertices,4);
-	mesh->setIndices(indices,6);
-	mesh->setTextureCoord((vec2*)uv,8);
-	mesh->setNormals((vec3*)normals,4);
+	mesh->setVertices((vec3*)vertices, 4);
+	mesh->setIndices(indices, 6);
+	mesh->setTextureCoord((vec2*)uv, 8);
+	mesh->setNormals((vec3*)normals, 4);
 
 	Image image;
 	image.load("data/texture/planks_oak.png");
-
 	texture = new Texture;
 	texture->load(&image);
 	texture->enableMipmap(true);
-
 	shader->setTexture(texture);
-
-	model = new Model;
-	model->load("data/model/monkey.obj");
 
 	rootNode = new SceneNode;
 	meshItem = new SceneMeshItem(mesh);
 	meshItem->setShader(shader);
 	rootNode->addItem(meshItem);
+}
 
-	modelItem = new SceneModelItem(model,normalShader);
-	rootNode->addItem(modelItem);
-
-	Projection projection;
-	projection.setProjection(radians(70.0f),1200.0f,720.0f,0.01f,50.0f);
-
-	camera = new Camera(vec3(0,0.1,5),vec3(0,0,-1),vec3(0,1,0));
-	camera->setProjection(projection);
-	
-	shader->Shader::bind();
-	shader->setParameter("pointLight.position",vec3(3,2,0));
-	shader->setParameter("pointLight.radiant",vec3(1,1,1)*3.0f);
-	shader->Shader::unbind();
+void MainWindow::initModelItem()
+{
+	bool result = true;
+	normalShader = new ThreeDShader;
+	result &= normalShader->addVertexShader(File::readAllText("data/shader/test.vs"));
+	result &= normalShader->addFragmentShader(File::readAllText("data/shader/BasicLighting.fs"));
+	result &= normalShader->compile();
+	if(result == false)
+	{
+		terminate();
+		exit(0);
+	}
 
 	normalShader->Shader::bind();
-	normalShader->setParameter("pointLight.position",vec3(3,2,0));
-	normalShader->setParameter("pointLight.radiant",vec3(1,1,1)*3.0f);
+	normalShader->setParameter("pointLight.position",vec3(3, 2, 0));
+	normalShader->setParameter("pointLight.radiant",vec3(3.0f));
 	normalShader->Shader::unbind();
+
+	model = new Model;
+	model->load("data/model/monkey.obj");
+
+	modelItem = new SceneModelItem(model, normalShader);
+	rootNode->addItem(modelItem);
 }
 
 MainWindow::~MainWindow()
@@ -185,7 +199,7 @@ void MainWindow::update()
 	if(getKeyState(Key::C) == true)
 		camera->move(-camera->getUp()*moveSpeed);
 
-	// if(getKeyState(Key::Esc) == true)
+	//if(getKeyState(Key::Esc) == true)
 	// 	exit(0);
 
 	//Mouse movements

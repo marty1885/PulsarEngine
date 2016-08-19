@@ -91,20 +91,6 @@ mat4x4 Transform::getTranlationMatrix()
 	return glm::translate(translation);
 }
 
-void Projection::setProjection(float f, float w, float h, float near, float far)
-{
-	fov = f;
-	width = w;
-	height = h;
-	zNear = near;
-	zFar = far;
-}
-
-mat4x4 Projection::getProjectionMatrix()
-{
-	return glm::perspective(fov,width/height,zNear,zFar);
-}
-
 string File::readAllText(string path)
 {
 	ifstream ifs(path);
@@ -118,89 +104,4 @@ string File::readAllText(string path)
 	string content( (istreambuf_iterator<char>(ifs) ),
 		(istreambuf_iterator<char>()));
 	return content;
-}
-
-Camera::Camera(vec3 pos, vec3 dir, vec3 upVec)
-{
-	position = pos;
-	direction = normalize(dir);
-	up = normalize(upVec);
-}
-
-Camera::Camera()
-{
-	position = vec3(0,0,0);
-	direction = vec3(0,0,-1);
-	up = vec3(0,1,0);
-}
-
-mat4x4 Camera::getCameraMatrix()
-{
-	mat4x4 viewMatrix = glm::lookAt(position, direction+position, up);
-	return viewMatrix;
-}
-
-void Camera::move(vec3 dir)
-{
-	position += dir;
-}
-
-void Camera::rotateX(float rad)
-{
-	vec3 right = normalize(cross(direction,up));
-
-	direction = normalize(glm::rotate(direction,rad,right));
-	up = normalize(cross(right,direction));
-
-}
-
-void Camera::rotateY(float rad)
-{
-	direction = normalize(glm::rotate(direction,rad,up));
-
-}
-
-void Camera::rotateZ(float rad)
-{
-	up = normalize(glm::rotate(up,rad,direction));
-}
-
-void Camera::setDirection(vec3 dir)
-{
-	direction = dir;
-}
-
-void Camera::setUp(vec3 upVec)
-{
-	up = upVec;
-}
-
-vec3 Camera::getPosition()
-{
-	return position;
-}
-
-vec3 Camera::getDirection()
-{
-	return direction;
-}
-
-vec3 Camera::getRight()
-{
-	return normalize(cross(direction,up));
-}
-
-vec3 Camera::getUp()
-{
-	return up;
-}
-
-Projection Camera::getProjection()
-{
-	return projection;
-}
-
-void Camera::setProjection(Projection proj)
-{
-	projection = proj;
 }

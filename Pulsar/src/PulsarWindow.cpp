@@ -1,4 +1,5 @@
-#include <ExampleUtils.hpp>
+#include <PulsarWindow.hpp>
+using namespace Pulsar;
 using namespace std;
 using namespace glm;
 
