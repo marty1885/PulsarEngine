@@ -25,6 +25,7 @@ public:
         Camera();
         Camera(vec3 pos, vec3 dir, vec3 upVec);
         Camera(vec3 pos, vec3 dir, vec3 rightVec, vec3 upVec);
+	virtual ~Camera();
         void lookAt(vec3 pos, vec3 lookAt, vec3 upVec);
 
         void move(vec3 dir);
@@ -63,6 +64,7 @@ class PerspectiveCamera : public Camera
 {
 public:
         using Camera::Camera;
+	virtual ~PerspectiveCamera();
         void setFOV(float2 fieldOfView);
         void setFOV(float fovX, float fovY);
         inline float2 getFOV() const

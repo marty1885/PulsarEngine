@@ -40,6 +40,10 @@ Camera::Camera(vec3 camPosition, vec3 camDirection, vec3 camRight, vec3 camUp)
 	up = camUp;
 }
 
+Camera::~Camera()
+{
+}
+
 void Camera::lookAt(vec3 pos, vec3 lookAt, vec3 upVec)
 {
 	vec3 diffBtw = lookAt - pos;
@@ -133,6 +137,10 @@ void Camera::setAspectRatio(float ratio)
 float Camera::getAspectRatio() const
 {
 	return pixelAspectRatio;
+}
+
+PerspectiveCamera::~PerspectiveCamera()
+{
 }
 
 void PerspectiveCamera::setFOV(float2 fieldOfView)
