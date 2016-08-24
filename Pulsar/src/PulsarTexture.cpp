@@ -12,7 +12,7 @@ Image::Image(string path)
 	load(path);
 }
 
-void Image::load(string path)
+void Image::load(string path, float gamma)
 {
 	//Clear any previous data. Although in any good programming. This shouldn't happen
 	if(buffer != NULL)
@@ -37,10 +37,10 @@ void Image::load(string path)
 		for(int j=0;j<width;j++)
 		{
 			pixel = image.get_pixel(j,i);
-			buffer[i*width+j].r = pixel.red/255.0f;
-			buffer[i*width+j].g = pixel.green/255.0f;
-			buffer[i*width+j].b = pixel.blue/255.0f;
-			buffer[i*width+j].w = pixel.alpha/255.0f;
+			vec4 colorVec(pixel.red/255.0f,pixel.green/255.0f,pixel.blue/255.0f,pixel.alpha/255.0f);
+			const vec4 gammaVec(gamma,gamma,gamma,1);
+			colorVec = glm::pow(colorVec,gammaVec);
+			buffer[i*width+j] = colorVec;
 		}
 }
 

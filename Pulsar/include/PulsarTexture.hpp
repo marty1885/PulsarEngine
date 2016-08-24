@@ -16,7 +16,7 @@ public:
 	Image();
 	Image(string path);
 	virtual ~Image();
-	void load(string path);
+	void load(string path, float gamma = 2.2);
 	void save(string path);
 	vec4* getRaw();
 	int getWidth();
